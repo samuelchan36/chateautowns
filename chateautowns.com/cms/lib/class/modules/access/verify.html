@@ -1,0 +1,34 @@
+<article id="login">
+	
+	<section>
+		<div class="grid-2" id="wrp-login">
+			<div>
+				<div class="logo"><img src="{Logo}"></div>
+			</div>
+			<div>
+					<div class="login">
+						<h1>Verify Identity</h1>
+						<p>For your security, please enter the 6 digit validation code emailed to your address on file.</p>
+
+						<div class="registration form-anchor" id="frmregistration" data-form="frmRegister" >
+
+								<form action="/cms/access/do-verify" method="POST" id="frmRegister" class="validateme" data-event-name="Registration" data-submit-type="Inline" data-thank-you="">
+										<input type="hidden" name="g-recaptcha-response" value=""/>
+										<div class="form-row"><div class="field mandatory"><label for="VerificationCode">Verification Code</label><input type="text" name="VerificationCode" id="VerificationCode" placeholder="Verification Code" config-max-length="128"></div></div>
+										<div class="g-recaptcha" data-sitekey="6LclLJAUAAAAAGrx_qrpq_r3AIh-ZfOMeGn_CJ-M" data-callback="afterRecaptcha" data-size="invisible"></div>			
+										<div class="form-row form-row-footer">
+												<div class="splitter split-2">
+														<div><div class="field"><a href="/cms/access/login">Request new code</a></div></div>
+														<div><div class="field"><button type="submit">Submit</button></div></div>
+												</div>
+										</div>
+
+								</form>
+						</div>
+
+					</div>
+
+			</div>
+		</div>
+	</section>
+</article>

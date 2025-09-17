@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="71.5px" height="46.25px" viewBox="0 0 71.5 46.25" enable-background="new 0 0 71.5 46.25" xml:space="preserve">
+<g>
+	<defs>
+		<rect id="SVGID_1_" width="71.5" height="46.25"/>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  overflow="visible"/>
+	</clipPath>
+	
+		<rect x="0.75" y="0.75" clip-path="url(#SVGID_2_)" fill="none" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" width="50" height="39.75"/>
+	<polygon clip-path="url(#SVGID_2_)" fill="none" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" points="70.75,40.5 
+		50.75,40.5 50.75,10.5 60.75,10.5 70.75,20.5 	"/>
+	<path clip-path="url(#SVGID_2_)" fill="#FFFFFF" d="M15.75,40.5c0,2.762-2.239,5-5,5s-5-2.238-5-5s2.239-5,5-5
+		S15.75,37.738,15.75,40.5"/>
+	
+		<circle clip-path="url(#SVGID_2_)" fill="none" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="10.75" cy="40.5" r="5"/>
+	<path clip-path="url(#SVGID_2_)" fill="#FFFFFF" d="M45.75,40.5c0,2.762-2.238,5-5,5s-5-2.238-5-5s2.238-5,5-5
+		S45.75,37.738,45.75,40.5"/>
+	
+		<circle clip-path="url(#SVGID_2_)" fill="none" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="40.75" cy="40.5" r="5"/>
+	<path clip-path="url(#SVGID_2_)" fill="#FFFFFF" d="M65.75,40.5c0,2.762-2.238,5-5,5s-5-2.238-5-5s2.238-5,5-5
+		S65.75,37.738,65.75,40.5"/>
+	
+		<circle clip-path="url(#SVGID_2_)" fill="none" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" cx="60.75" cy="40.5" r="5"/>
+</g>
+</svg>

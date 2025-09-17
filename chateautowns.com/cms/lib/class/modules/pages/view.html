@@ -1,0 +1,180 @@
+<div class="form-holder with-log {Class}">
+	{Form}
+	<div class="object-log">
+			{Log}
+	</div>
+	<a href="/cms/pages" id="cancel-edit">Cancel Edit</a>
+</div>
+
+
+<style>
+
+#cancel-edit { position: fixed; top: 0px; right: 0; padding: 0 10px; font-size: 16px; color: #fff; background: #000; line-height: 40px;}
+body.editor-active { height: 100vh; overflow: hidden;}
+div.form-row-rich-editor div.label { display:none !important}
+div.form-row.form-row-rich-editor div.field { width: 100%;}
+#Content { width: 100%; height: 600px; width: 1380px;}
+.form-row-editorArea textarea {width: 100%; height: 600px; width: 1380px;}
+.form-row-editorArea div.label { display: none;}
+.form-row-editorArea div.field { width: 100% !important; max-width: 100% !important; display: block !important; overflow: auto;}
+#iframe-content {  width: 100% !important; max-width: 100% !important; display: block !important; border: 0; background-color: #eee; height: 800px;}
+#iframe-content.active {  height: 100vh }
+#iframe-content-holder.active {  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99; overflow: hidden; background: #000}
+#iframe-content-holder.invisible {  display: none!important}
+#form-row-EditorArea div.label { display: none;}
+#form-row-EditorArea  div.field { width: 100% !important; max-width: 100% !important; display: block !important; overflow: auto;}
+
+div.editor-actions { display: block; text-align: left;}
+#activate-editor { display: inline-block; margin: 0 10px 30px 0; background: #000; color: #fff; line-height: 40px; font-size: 16px; text-transform: uppercase; padding: 0 20px; cursor: pointer;}
+#activate-editor:hover { background-color: #eee; color: #000}
+#edit-source-code { display: inline-block; margin: 0 auto 30px 0; background: #aaa; color: #fff; line-height: 40px; font-size: 16px; text-transform: uppercase; padding: 0 20px; cursor: pointer;}
+#edit-source-code.active { background-color: #99ff00}
+#edit-source-code:hover { background-color: #eee; color: #000}
+#form-row-Content div.label { display: none;}
+#form-row-Content div.field { display: block; width: 100%;}
+#Content { width: 100%; max-width: 100%; height: 800px; display: none}  
+#Content.active { display: block}  
+
+#SyncStatus a { display: inline-block; background-color: #ff3300; color: #fff; line-height: 30px; font-size: 14px; padding: 0 25px; margin-left: 10px}
+#SyncStatus.green-alert a { background-color: #999900; }
+#SyncStatus a:hover { background-color: #000; }
+
+
+div.form-row.invalid div.label { color: #ff3300;}
+div.form-row.invalid div.field { position: relative;}
+div.form-row.invalid div.field:after { content:"Invalid page address"; color: #ff3300; display: block; position: absolute; left: 0; bottom: -20px; text-align: left; font-size: 12px;}
+</style>
+
+<script>
+/*
+tinyTemplates = [
+					    {title: 'Masthead Section', description: 'Masthead banner with caption and buttons', url: '/cms/templates/tinymce/masthead.html'},
+					    {title: '3 Box Layout', description: '3 side by side boxes', url: '/cms/templates/tinymce/grid-3.html'},
+					    {title: 'Downloads List', description: 'List with download links', url: '/cms/templates/tinymce/list-1.html'},
+					    {title: 'Empty Section', description: 'Blank section container', url: '/cms/templates/tinymce/empty.html'},
+					  ];
+
+$(function(){
+		tinymce.init({ 
+			selector:'textarea.editorArea',
+			max_width: "1920px",
+			content_css : "/lib/css/default.css, /css/main.css, /cms/css/tinymce.css?v=2, " + masterCSS,
+			font_formats: tinyFonts,
+			fontsize_formats: tinySizes,
+			style_formats: tinyStyles,
+			style_formats_autohide: true,
+			remove_script_host : true,
+			branding: false,
+			relative_urls: false,
+			document_base_url : "http://"+location.hostname+"/",
+			body_class: "",
+			browser_spellcheck: true,
+			valid_elements: "*[*]",
+			valid_children: "+a[div]",
+			templates: tinyTemplates,
+			plugins : "table preview paste visualblocks code image imagetools media link fullscreen textcolor spellchecker lists, template",
+			menubar: false,
+			toolbar: [	"template | styleselect formatselect fontselect fontsizeselect | cut copy paste | undo redo ",
+			"image imagetools | media | link unlink | table | forecolor backcolor bold italic underline strikethrough alignleft aligncenter alignright alignjustify outdent indent | bullist numlist blockquote subscript superscript",
+			" removeformat visualblocks | spellchecker preview fullscreen code "],
+			visualblocks_default_state: true,
+			  end_container_on_empty_block: true
+			});
+});
+*/
+
+var pageid = 0;
+
+function closeEditor(txt){
+	if (txt != '')
+	{
+		$("#Content").val(txt);
+		$("#Dirty").val("yes");
+	}
+	$("#iframe-content").attr("src", $("#iframe-content").attr("src").replace("&mode=active", "")).removeClass("active");
+	$("#iframe-content-holder").removeClass("active");
+	$("body").removeClass("editor-active");
+	
+}
+$(function(){
+	
+	if (getQueryVariable("id")) pageid = parseInt(getQueryVariable("id"));
+
+	$("#activate-editor").click(function(){
+		$("#edit-source-code").removeClass("active");
+		$("#iframe-content-holder").removeClass("invisible");
+		$("#Content").removeClass("active");
+		$("#iframe-content").attr("src", $("#iframe-content").attr("src") + "&mode=active").addClass("active");
+		$("#iframe-content-holder").addClass("active");
+		$("body").addClass("editor-active");
+		return false;
+	})
+
+
+	$("#edit-source-code").click(function(){
+		$("#Content").toggleClass("active");
+		$("#iframe-content-holder").toggleClass("invisible");
+		$(this).toggleClass("active");
+		location = "#Content";
+	})
+	
+	$("#Title").bind("blur", function () {
+		if ($("#Title").val() == "") return true;
+		if ($("#Address").val() == "")
+		{
+			$.get("/cms/pages/validate-address?id=" + pageid + "&address=" + encode($("#Title").val()), function(data){
+				if(data) {
+					$("#Address").val(data); 
+					$("#Address").parent().parent().removeClass("invalid"); 
+				} else {
+					$("#Address").parent().parent().addClass("invalid"); 
+				}
+			}, "text")				
+		}
+	});
+
+
+
+	$("#Address").change(function(){
+		if ($("#Address").val() == "") return true;
+		$.get("/cms/pages/validate-address?id=" + pageid + "&address=" + encode($(this).val()), function(data){
+			if(data) {
+				$("#Address").val(data); 
+				$("#Address").parent().parent().removeClass("invalid"); 
+			} else {
+				$("#Address").parent().parent().addClass("invalid"); 
+			}
+		}, "text")	
+	})
+
+
+	tinymce.init(
+	{ 
+			selector:'textarea.editorArea',
+			max_width: "1920px",
+			content_css : "/lib/css/default.css, /css/main.css, /cms/css/tinymce.css?v=2, " + masterCSS,
+			font_formats: tinyFonts,
+			fontsize_formats: tinySizes,
+			style_formats: tinyStyles,
+			style_formats_autohide: true,
+			remove_script_host : true,
+			branding: false,
+			relative_urls: false,
+			document_base_url : "http://"+location.hostname+"/",
+			body_class: "",
+			browser_spellcheck: true,
+			valid_elements: "*[*]",
+			valid_children: "+a[div]",
+			templates: tinyTemplates,
+			plugins : "table preview paste visualblocks code image imagetools media link fullscreen textcolor spellchecker lists, template",
+			menubar: false,
+			toolbar: [	"template | styleselect formatselect fontselect fontsizeselect | cut copy paste | undo redo ",
+			"image imagetools | media | link unlink | table | forecolor backcolor bold italic underline strikethrough alignleft aligncenter alignright alignjustify outdent indent | bullist numlist blockquote subscript superscript",
+			" removeformat visualblocks | spellchecker preview fullscreen code "],
+			visualblocks_default_state: true,
+			  end_container_on_empty_block: true
+			}
+);
+});
+
+</script>

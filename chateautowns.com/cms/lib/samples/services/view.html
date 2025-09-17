@@ -1,0 +1,42 @@
+<div class="form-holder with-log {Class}">
+	{Form}
+	<div class="object-log">
+			{Log}
+	</div>
+</div>
+
+
+<style>
+</style>
+
+<script>
+$(function(){
+
+		tinymce.init({ 
+			selector:'#Content,#ContentFr',
+			max_width: "1920px",
+			content_css : "/lib/css/default.css, /css/main.css, /cms/css/tinymce.css?v=2, " + masterCSS,
+			font_formats: tinyFonts,
+			fontsize_formats: tinySizes,
+			style_formats: tinyStyles,
+			style_formats_autohide: true,
+			remove_script_host : true,
+			branding: false,
+			relative_urls: false,
+			document_base_url : "http://"+location.hostname+"/",
+			body_class: "content center",
+			browser_spellcheck: true,
+			valid_elements: "*[*]",
+			valid_children: "+a[div]",
+			templates: tinyTemplates,
+			images_upload_url: "/cms/system/upload-image",
+			plugins : "table preview paste visualblocks code jsimage imagetools media link fullscreen textcolor spellchecker lists template jsimage",
+			menubar: false,
+			toolbar: [	"template | styleselect formatselect fontselect fontsizeselect | cut copy paste | undo redo ",
+			"jsimage imagetools | media | link unlink | table | forecolor backcolor bold italic underline strikethrough alignleft aligncenter alignright alignjustify outdent indent | bullist numlist blockquote subscript superscript",
+			" removeformat visualblocks | spellchecker preview fullscreen code"],
+			visualblocks_default_state: true,
+			  end_container_on_empty_block: true
+			});
+});
+</script>

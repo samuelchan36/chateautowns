@@ -1,0 +1,33 @@
+<div class="form-holder with-log {Class}">
+	{Form}
+	<div class="object-log">
+			{Log}
+	</div>
+</div>
+
+
+<style>
+</style>
+
+<script>
+
+$(function(){
+
+	$("#CommunityID").change(function(){
+		$.get("/cms/floorplans/filter-models?id=" + $(this).val(), function(data){
+			obj = $("#ModelID").get(0);
+			obj.options.length = 1;
+			for (i=0; i< data.length ; i++ )
+			{
+				o = new Option(); 
+				o.text = data[i].Name;
+				o.value = data[i].ID;
+				obj.options[obj.options.length] = o;
+			}
+			$("#ModelID").change();
+			}, "json")
+		})
+	
+})
+
+</script>

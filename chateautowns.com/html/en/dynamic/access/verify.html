@@ -1,0 +1,37 @@
+<article id="verify-email" class="access">
+
+
+
+	<section class="js-animate"  config-animation-better="100">
+
+
+
+				<div>
+					<h2>Log In.</h2>
+
+					<div class="form form-anchor" data-form="frmLogin"  id="login-form">
+				
+								<div class="inline-response" data-form="frmLogin">
+									<p>Thank you for your interest </p>
+								</div>
+
+								<form action="/access/do-verify" method="POST" id="frmLogin" class="validateme" data-adwords="" data-event-name="Newsletter" data-submit-type="Inline" data-thank-you="" enctype="multipart/form-data">
+										<input type="hidden" name="Submitted" id="Submitted" value=""/>
+										<input type="hidden" name="PostLogin" id="PostLogin" value="{PostLogin}"/>
+										<fieldset>
+											<div class="form-row"><div class="field mandatory"><label for="VerificationCode">VerificationCode</label><input type="text" name="VerificationCode" id="VerificationCode" placeholder="Verification Code *" config-max-length="128" class=""></div></div>
+											<div class="form-row"><div class="field"><a href="/access/login" style="text-decoration: underline">Request new code</a></div><div class="field"><button id="submit" type="submit">Log In</button></div></div>
+											
+										</fieldset>
+								</form>
+						</div>	
+
+			</div>
+
+
+
+
+	</section>		
+		
+
+</article>

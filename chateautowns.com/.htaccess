@@ -1,0 +1,38 @@
+# Helicon ISAPI_Rewrite configuration file
+# Version 3.1.0.89
+
+RewriteEngine On
+
+
+#REMOVE TRAILING SLASH
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [R=301,L]
+
+#FORCE WWW
+RewriteCond %{HTTP_HOST} !(.*)joey(.*)$ [NC]
+RewriteCond %{HTTP_HOST} !www\.chateautowns.com$ [NC]
+RewriteRule ^(.*)/?$ https://www.chateautowns.com/$1 [L,R=301,QSA]
+
+#REDIRECT TO HTTPS
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)/?$ https://%{HTTP_HOST}/$1 [L,R=301,QSA]
+
+
+#ROBOTS AND SITEMAP
+RewriteRule ^robots\.txt$ index.php?o=get-robots-txt [L,NC,QSA]
+RewriteRule ^Sitemap\.xml$ index.php?o=get-sitemap [L,NC,QSA]
+
+RewriteRule ^access/reset-password/(.*)/?$ index.php?s=access&o=reset-password&code=$1 [QSA,L,NC]
+RewriteRule ^access/(.*)/?$ index.php?s=access&o=$1 [QSA,L,NC]
+
+RewriteRule ^listing/(.*)/?$ index.php?o=listing&id=$1 [QSA,L,NC]
+
+
+#CATCH ALL FINAL RULE
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(.*)\.(.*)$
+RewriteRule ^(.*)/?$ index.php?o=$1 [QSA,L,NC]
+
+

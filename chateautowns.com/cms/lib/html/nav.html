@@ -1,0 +1,62 @@
+<!-- START BLOCK : FILTERB -->
+<div class="filters">
+{Filters}
+</div>
+<!-- END BLOCK : FILTERB -->
+
+<div class="nav-buttons">
+			{Actions}
+</div>
+
+<div class="table-nav-top">
+		
+		<div class="table-stats">
+			{TOTAL_RESULTS} records
+		</div>
+		<div class="table-nav">
+			<a href="{FIRST_PAGE}" class="nav-first {FIRST_PAGE_CLASS}"><i class="fas fa-step-backward"></i></a>
+			<a href="{PREV_PAGE}" class="nav-previous {PREV_PAGE_CLASS}"><i class="fas fa-backward"></i></a>
+			<div class="nav-jump"><label>JUMP TO:</label> {JUMPTO}</div>
+			<a href="{NEXT_PAGE}" class="nav-next {NEXT_PAGE_CLASS}"><i class="fas fa-forward"></i></a>
+			<a href="{LAST_PAGE}" class="nav-last {LAST_PAGE_CLASS}"><i class="fas fa-step-forward"></i></a>
+		</div>
+</div>
+
+<div class="main-table-legend">
+	<div class="action-icons">
+			{MainTableActions}
+	</div>
+	<div class="tbl-legend">
+		{MainTableLegend}
+	</div>
+</div>
+<div class="main-table">
+		{MainTable}
+</div>
+
+
+
+<script>
+$(function(){
+	$("#navJumpTo").change(function(){
+		location = $(this).val();
+		return false;
+	});
+
+//	$("filter_group").each(function(){
+//		var tw = 0;
+//		$(this).find("div.filter-cell").each(function(){
+//			tw += $(this).width();	
+//			console.log(tw);
+//		})
+//		console.log(tw);
+//	})
+})
+</script>
+
+<style>
+div.block-filters { width: 100%;}
+filter_group { display: block; margin: 10px 0; width: 100%;}
+#table_filters { padding: 0 10px}
+.filter-actions { float: right;}
+</style>

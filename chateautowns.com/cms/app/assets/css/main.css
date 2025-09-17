@@ -1,0 +1,7 @@
+:root { 
+	--col-primary: #000;
+	--default-font-size: 18px;
+	--col-input: #000;
+	--default-input-font-size: 18px;
+	--col-error: #ff0000;
+}

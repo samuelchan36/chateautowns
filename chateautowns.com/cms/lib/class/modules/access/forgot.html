@@ -1,0 +1,30 @@
+<article id="login">
+	
+	<section>
+		<div class="grid-2" id="wrp-login">
+			<div>
+				<div class="logo"><img src="{Logo}"></div>
+			</div>
+			<div>
+					<div class="login">
+						<h1>Password Recovery Form</h1>
+						<p>Please enter your email address.</p>
+
+						<div class="registration form-anchor" id="frmregistration" data-form="frmRegister" >
+
+								<form action="/cms/access/do-forgot" method="POST" id="frmRegister" class="validateme" data-event-name="Registration" data-submit-type="Inline" data-thank-you="">
+										<input type="hidden" name="g-recaptcha-response" value=""/>
+										<div class="form-row"><div class="field mandatory"><label for="Email">Email</label><input type="text" name="Email" id="Email" placeholder="Email" config-max-length="128" class="js-email"></div></div>
+										<div class="form-row form-row-footer">
+												<div><div class="field"><button type="submit">SUBMIT</button></div></div>
+										</div>
+								</form>
+
+						</div>
+
+					</div>
+
+			</div>
+		</div>
+	</section>
+</article>

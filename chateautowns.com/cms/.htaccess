@@ -1,0 +1,18 @@
+# Helicon ISAPI_Rewrite configuration file
+# Version 3.1.0.89
+
+RewriteEngine On
+
+
+RewriteRule access/reset-password/(.*)$ index.php?s=access&o=reset-password&code=$1 [QSA,L,NC]
+
+#default
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(.*)favicon(.*)$
+RewriteRule ^(.*)/(.*)/?$ index.php?s=$1&o=$2 [QSA,L,NC]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(.*)favicon(.*)$
+RewriteRule ^(.*)/?$ index.php?s=$1 [QSA,L,NC]

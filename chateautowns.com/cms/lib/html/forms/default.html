@@ -1,0 +1,25 @@
+	<form name="{name}" id="{id}" action="{action}" method="{method}" enctype="{enctype}" target="{target}" class="{class}">
+			<!-- START BLOCK : HIDDENFIELDS -->
+				{Data}
+			<!-- END BLOCK : HIDDENFIELDS -->
+		<div class="form-wrapper">
+			<!-- START BLOCK : FORMBLOCK -->
+			<div class="form-block {Class}" id="{BlockID}">
+					<h2>{Label}</h2>
+					<div class="form-content">
+					<!-- START BLOCK : FORMDATA -->
+						{FormRow}
+					<!-- END BLOCK : FORMDATA -->
+					</div>
+			</div>
+			<!-- END BLOCK : FORMBLOCK -->
+			<div class="form-block form-footer">
+					<h2></h2>
+					<div class="form-content">
+				<!-- START BLOCK : FOOTER -->
+					<div class="form-row"><div class="full"><input type='button' value='Cancel' id='bt-cancel'>{Input}</div></div>
+				<!-- END BLOCK : FOOTER -->
+					</div>
+			</div>
+		</div>
+	</form>

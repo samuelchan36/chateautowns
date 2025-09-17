@@ -1,0 +1,183 @@
+<div id="fm-toolbar-top"><button class="publish">Publish</button><button class="reload">Reload</button><div id="folder-actions"><a href="" id="new_group">New Settings Group</a><a href="" id="delete_group" class="notactive">Delete Group</a><a href="" id="new_setting" class="notactive">New Setting</a><a href="" id="delete_setting" class="notactive">Delete Setting</a></div></div>
+
+<div id="settings-holder">
+
+<!-- START BLOCK : SECTION -->
+	<div class="settings-section" data-id="{ID}">
+		<div class="title">{Name}</div>
+		<div class="comments">{Comments}</div>
+		<div class="setting-group">
+<!-- START BLOCK : SETTING -->
+				<div class="setting" data-id="{ID}">
+					<label>{Name}</label>
+					<div><input type="text" value="{Value}"/></div>
+					<span>{Comments}</span>
+				</div>
+<!-- END BLOCK : SETTING -->
+		</div>
+		</div>
+<!-- END BLOCK : SECTION -->
+</div>
+
+
+<style>
+div#settings-holder { display: block; width: 100%; }
+div.settings-section { display: block; width: 100%; }
+div.setting-group { display: block; width: 100%; padding: 10px 0 80px;}
+div.settings-section div.title { display: block; width: 100%; font-size: 24px; color: #000; font-family: 'gilroylight';}
+div.settings-section div.title.active { color: #ff0000}
+div.settings-section div.comments { display: block; width: 100%; font-size: 14px; color: #0099cc; font-family: 'gilroylight';}
+div.setting { display: block; width: 100%; font-size: 0; padding: 5px 0; border-bottom: 1px solid #f6f6f6; min-width: 900px}
+div.setting.active { background-color: #f6f6f6}
+div.setting * { display: inline-block; vertical-align: middle; }
+div.setting label { width: 200px; text-align: right; padding-right: 10px; font-size: 16px; font-family: 'gilroyregular'; line-height: 1.5;}
+div.setting div { width: 500px; text-align: left; padding: 0px; min-height: 40px; }
+div.setting input { width: 100%; text-align: left; padding: 0 10px; min-height: 40px; line-height: 40px; font-size: 16px; font-family: 'gilroylight'; }
+div.setting span { width: calc(100% - 700px); font-size: 14px; color:#0099cc; font-family: 'gilroylight'; padding-left: 20px; }
+
+
+a.noaccess { color: #fff; cursor: default;}
+a.notactive { color: #aaa; cursor: default;}
+
+#fm-toolbar-top { display: block; width: 100%; font-size: 0; background: #ddd; height: 40px; margin-bottom: 50px}
+#fm-toolbar-top button { display: inline-block; width: auto; font-size: 14px; background: #000; color: #fff; height: 40px; border: 0; padding:0 20px; cursor: pointer}
+#fm-toolbar-top button.reload { background: #95c639}
+#fm-toolbar-top button:hover { background: #aaa}
+#fm-toolbar-top > div { display: inline-block; width: auto; font-size: 14px; vertical-align: top}
+#fm-searchbar { width: 300px; padding: 5px 5px;}
+#fm-searchbar input { width: 100%; font-size: 14px; line-height: 30px; border-radius: 30px; padding: 0 20px; background-color: #fff; border: 0 }
+
+#folder-actions { border-left: 0px solid #fff; padding: 0px 20px; margin: 0 0 0 15px; }
+#folder-actions a { display: inline-block; margin: 0 0px; text-align: center; padding: 12px 10px; vertical-align: top}
+#folder-actions a:hover { background-color: #999}
+#folder-actions a.noaccess:hover, #folder-actions a.notactive:hover { background-color: #ddd}
+
+#view-options { border-left: 1px solid #fff; border-right: 1px solid #fff; padding: 0px 20px; margin: 0 0px; }
+#view-options a { display: inline-block; margin: 0px; padding: 12px 10px; }
+#view-options a.active { background-color: #999}
+#view-options a:hover { background-color: #999}
+
+</style>
+
+<script>
+	
+	$(function(){
+		
+		settingEvents();
+
+		$("#delete_group").click(function(){
+			if ($(this).hasClass("notactive")) return false;
+			if (confirm("Are you sure you want to delete this group and all included settings?"))
+			{
+					$.get("/cms/settings/delete-group?id=" + $("div.title.active").parent().attr("data-id"), function(data){
+						$("div.title.active").parent().remove();
+						$("#delete_group").addClass("notactive");
+						$("#new_setting").addClass("notactive");
+						return false;	
+					});
+			}
+			return false;
+		})
+
+
+		$("#new_group").click(function(){
+			if ($(this).hasClass("notactive")) return false;
+			ret = prompt("Enter group name");
+			if (!(ret == null || !ret))
+			{
+				$.get("/cms/settings/new-group?value=" + encode(ret), function(data){
+					$("#settings-holder").append(data);
+					settingEvents();
+					return false;	
+				});
+			}
+			return false;			
+		})
+
+
+		$("#delete_setting").click(function(){
+			if ($(this).hasClass("notactive")) return false;			
+			if (confirm("Are you sure you want to delete this setting?"))
+			{
+					$.get("/cms/settings/delete-setting?id=" + $("div.setting.active").attr("data-id"), function(data){
+						$("div.setting.active").remove();
+						$("#delete_setting").addClass("notactive");
+						return false;	
+					});
+			}
+			return false;
+		})
+
+		$("#new_setting").click(function(){
+			if ($(this).hasClass("notactive")) return false;			
+			ret = prompt("Enter setting name (only letters are allowed)");
+			if (!(ret == null || !ret))
+			{
+				$.get("/cms/settings/new-setting?id=" + $("div.title.active").parent().attr("data-id") + "&value=" + encode(ret), function(data){
+					$("div.title.active").parent().find("div.setting-group").append(data);
+					settingEvents();
+					return false;	
+				});
+			}
+			return false;
+
+		})
+
+		$("#fm-toolbar-top button.publish").click(function(){
+			if (confirm("Are you sure you want to publish all settings to disk?"))
+			{
+				$.get("/cms/settings/publish-settings", function(data){
+					return false;	
+				});
+			}	
+		})
+	
+		$("#fm-toolbar-top button.reload").click(function(){
+			if (confirm("Are you sure you want to refresh all settings from disk?"))
+			{
+				$.get("/cms/settings/load-settings", function(data){
+					return false;	
+				});
+			}	
+		})
+
+	})
+
+	function settingEvents(){
+	$("div.title").unbind("click");
+	$("div.setting").unbind("click");
+	$("div.setting input").unbind("change");
+
+	$("div.title").click(function(){
+			$("div.title").removeClass("active");
+			$(this).addClass("active");
+			$("#delete_group").removeClass("notactive");
+			$("#new_setting").removeClass("notactive");
+//			$("#delete_group").addClass("notactive");
+		})
+
+		$("div.setting").click(function(){
+			$("div.setting").removeClass("active");
+			$(this).addClass("active");
+//			console.log($(this).parent().parent().find("div.title"));
+			$("div.title").removeClass("active");
+			$("#delete_group").removeClass("notactive");
+			$("#new_setting").removeClass("notactive");
+
+			$(this).parent().parent().find("div.title").addClass("active");
+			$("#delete_setting").removeClass("notactive");
+//			$("#delete_group").addClass("notactive");
+		})
+
+		$("div.setting input").change(function(){
+				$.get("/cms/settings/update-setting?id=" + $(this).parent().parent().attr("data-id") + "&value=" + encode($(this).val()), function(data){
+					return false;	
+				});
+				return true;
+		});
+
+	}
+
+
+
+</script>

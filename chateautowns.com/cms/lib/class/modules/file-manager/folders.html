@@ -1,0 +1,533 @@
+<!-- START BLOCK : NOACCESS -->
+<div class="access-error">Media folder is not accessible, uploading is disabled</div>
+<!-- END BLOCK : NOACCESS -->
+
+<div id="fm-toolbar-top"><div id="fm-searchbar"><input type="text" id="fm-search-field" value="{Search}"></div><div id="folder-actions"><a href="" id="new_folder" class="{NoAccess}">New Folder</a><a href="" id="delete_folder" class="notactive {NoAccess}">Delete Folder</a><a href="" id="upload_files" class="notactive {NoAccess}">Upload Files</a></div><div id="view-options"><a href="" class="active" id="view_as_list">LIST</a><a href="" id="view_as_grid" class="view-grid">GRID</a><a href="" id="action_hide_empty">Hide Empty Folders</a></div></div>
+<div id="current-path"></div>
+<div class="years">
+		<!-- START BLOCK : YEARB -->
+			<div class="year-label">{Year}</div>
+		<!-- END BLOCK : YEARB -->
+	</div>
+<div class="main-legend">
+	<label>Legend</label>
+	<div><i class="fas fa-suitcase"></i> Move file/folder</div>	
+	<div><i class="fas fa-edit"></i> Edit file</div>	
+	<div><i class="fas fa-file-code"></i> Get Link</div>	
+	<div><i class="fas fa-arrow-down"></i> Download</div>	
+	<div><i class="fas fa-trash-alt"></i> Delete</div>	
+</div>
+	<div class="folders">
+				<div class="group-folders">
+						<!-- START BLOCK : FOLDER1 -->
+						<div class="folder level-{Level}" data-path="{Path}" data-count="{FileCount}" data-id="{FolderID}" data-src="{Thumbnail}">
+								<span>
+										<input type="text" id="FolderID_{FolderID}"  data-id="{FolderID}" value="{FolderName}">
+										<div class="actions">
+											<a title="Move Folder" class="move-folder" data-id="{FolderID}" ><i class="fas fa-suitcase"></i></a>
+										</div>
+								</span>
+								<div class="group-folders">
+										<!-- START BLOCK : FOLDER2 -->
+											<div class="folder level-{Level}" data-path="{Path}" data-count="{FileCount}" data-id="{FolderID}" data-src="{Thumbnail}">
+														<span>
+																<input type="text" id="FolderID_{FolderID}" data-id="{FolderID}" value="{FolderName}" >
+																<div class="actions">
+																	<a title="Move Folder" class="move-folder" data-id="{FolderID}" ><i class="fas fa-suitcase"></i></a>
+																</div>
+														</span>
+														<div class="group-files">
+														<!-- START BLOCK : FILE3 -->
+															<div class="file level-{Level}  ext-{Extension}" data-path="{Path}" data-year="{Year}" data-id="{FileID}"  data-src="{Thumbnail}">
+																<span><input type="text" id="FileID_{FileID}" value="{FileName}" ><legend>{Extension}</legend></span>
+																<div class="file-actions">
+																		<a title="Edit" class="update-file" ><i class="fas fa-edit"></i></a>
+																		<a title="Move File" class="move-file" data-id="{FileID}" ><i class="fas fa-suitcase"></i></a>
+																		<a data-clipboard-text="{Location}" title="Get Link" class="get-link" ><i class="fas fa-file-code"></i></a>
+																		<a href="{Location}" title="Download" target="_blank" class="round"><i class="fas fa-arrow-down"></i></a>
+																		<a title="Delete" class="delete-file" ><i class="fas fa-trash-alt"></i></a>
+																</div>
+															</div>
+														<!-- END BLOCK : FILE3 -->
+													</div>
+											</div>
+										<!-- END BLOCK : FOLDER2 -->
+								</div>
+								<div class="group-files">
+										<!-- START BLOCK : FILE2 -->
+											<div class="file level-{Level}  ext-{Extension}" data-path="{Path}" data-year="{Year}" data-id="{FileID}"  data-src="{Thumbnail}">
+												<span><input type="text" id="FileID_{FileID}" value="{FileName}" ><legend>{Extension}</legend></span>
+												<div class="file-actions">
+														<a title="Edit" class="update-file" ><i class="fas fa-edit"></i></a>
+														<a title="Move File" class="move-file" data-id="{FileID}" ><i class="fas fa-suitcase"></i></a>
+														<a data-clipboard-text="{Location}" title="Get Link" class="get-link" ><i class="fas fa-file-code"></i></a>
+														<a href="{Location}" title="Download" target="_blank" class="round"><i class="fas fa-arrow-down"></i></a>
+														<a title="Delete" class="delete-file" ><i class="fas fa-trash-alt"></i></a>
+												</div>
+											</div>
+										<!-- END BLOCK : FILE2 -->
+								</div>
+					</div>
+					<!-- END BLOCK : FOLDER1 -->
+			</div>
+			<div class="group-files">
+					<!-- START BLOCK : FILE -->
+						<div class="file level-{Level} ext-{Extension}" data-path="{Path}" data-year="{Year}" data-id="{FileID}"  data-src="{Thumbnail}">
+							<span><input type="text" id="FileID_{FileID}" value="{FileName}" ><legend>{Extension}</legend></span>
+							<div class="file-actions">
+									<a title="Edit" class="update-file" ><i class="fas fa-edit"></i></a>
+									<a title="Move File" class="move-file" data-id="{FileID}" ><i class="fas fa-suitcase"></i></a>
+									<a data-clipboard-text="{Location}" title="Get Link" class="get-link" ><i class="fas fa-file-code"></i></a>
+									<a href="{Location}" title="Download" target="_blank" class="round"><i class="fas fa-arrow-down"></i></a>
+									<a title="Delete" class="delete-file" ><i class="fas fa-trash-alt"></i></a>							
+							</div>
+						</div>
+					<!-- END BLOCK : FILE -->
+		</div>
+</div>
+
+
+
+	<div id="dropzone-holder">
+		<div id="dropzone">
+		</div>
+		<a id="close-dropzone"></a>
+	</div>
+
+<style>
+
+div.main-legend { display: block; width: 100%; font-size: 0; margin-bottom: 10px; }
+div.main-legend > label { display: inline-block; vertical-align: middle; margin: 0 10px 10px; font-size: 14px; color: #000; text-transform: uppercase; font-weight: bold}
+div.main-legend > div { display: inline-block; vertical-align: middle; margin: 0 10px 10px; font-size: 14px; color: #000}
+
+div.access-error { background-color: #be414a; color: #fff; font-size: 16px; text-align: center; display: block; padding: 20px; margin-bottom: 50px; }
+
+a.noaccess { color: #fff; cursor: default;}
+a.notactive { color: #aaa; cursor: default;}
+
+#fm-toolbar-top { display: block; width: 100%; font-size: 0; background: #ddd; height: 40px; }
+#fm-toolbar-top > div { display: inline-block; width: auto; font-size: 14px; vertical-align: top}
+#fm-searchbar { width: 300px; padding: 5px 5px;}
+#fm-searchbar input { width: 100%; font-size: 14px; line-height: 30px; border-radius: 30px; padding: 0 20px; background-color: #fff; border: 0 }
+
+#folder-actions { border-left: 1px solid #fff; padding: 0px 20px; margin: 0 0 0 15px; }
+#folder-actions a { display: inline-block; margin: 0 0px; text-align: center; padding: 12px 10px; vertical-align: top}
+#folder-actions a:hover { background-color: #999}
+#folder-actions a.noaccess:hover, #folder-actions a.notactive:hover { background-color: #ddd}
+
+#view-options { border-left: 1px solid #fff; border-right: 1px solid #fff; padding: 0px 20px; margin: 0 0px; }
+#view-options a { display: inline-block; margin: 0px; padding: 12px 10px; }
+#view-options a.active { background-color: #999}
+#view-options a:hover { background-color: #999}
+
+div.years { display: block; width: 100%; border-bottom: 1px solid #666; margin-bottom: 20px; font-size: 0; }
+div.year-label { font-size: 48px; font-family: 'gilroylight'; padding-bottom: 3px; text-align: left; display: inline-block; margin-right: 30px; color: #eee; cursor: pointer;}
+div.year-label.active { color: #000; cursor: pointer;}
+
+div.folders { margin-bottom: 50px;}
+div.folders.hide-empty-folders div.folder.empty { display: none;}
+div.folder.hidden  { display: none !important}
+
+div.folder { display: block; width: 100%; margin-bottom: 3px; }
+div.folder > span { display: block; width: 100%; border: 0px solid #ddd; font-size: 18px; padding: 6px; background-color: #eee; position: relative;}
+div.folder > span:after { display: block; width: 100%; height: 100%; position: absolute; background: transparent; top: 0; left: 0; content: "";}
+div.folder > span input { display: block; width: 100%; border: 0px solid #ddd; font-size: 18px; padding: 10px; background-color: #eee; border-radius: 24px; line-height: 24px; text-align: left;}
+div.folder > div { display: none}
+div.actions { display: block; width: 90px; margin-right: 0px;  vertical-align: top; position: absolute; z-index: 9; font-size: 0; text-align: right; top: 0; right: 10px}
+div.actions a { display: inline-block; vertical-align: middle; font-size: 20px; line-height: 56px; margin-left: 10px; color: #3399ff}
+div.actions a i { font-size: 20px; line-height: 56px; }
+/*div.folder.open > span { background-color: #e0e0e0}*/
+div.folder.folder-active > span { background-color: #dd3c0d}
+div.folder.folder-active> span input { background-color: #dd3c0d; color: #fff}
+div.folder.folder-edit > span:after { display: none;}
+div.folder.folder-edit > span input { background-color: #fff; color: #000}
+div.folder.open > div { display: block; margin-top: 5px; padding-left: 20px;}
+
+div.file  { display: block; width: 100%; margin-bottom: 3px; border-bottom: 1px solid #eee; position: relative}
+div.file.hidden  { display: none !important}
+div.file > span { display: block; width: 100%; font-size: 0; padding: 10px; padding-right: 210px; position: relative; z-index: 8}
+div.file > span legend { display: block; position: absolute; left: 0px; width: 40px; font-size: 14px; text-transform: uppercase; color: #ff3300; text-align: right; height: 100%; line-height: 64px; top: 0; }
+div.file > span input { display: inline-block; width: calc(100% - 70px);  margin-left: 40px; border: 0px solid #ddd; font-size: 18px; padding: 10px; background-color: #fff; border-radius: 24px; line-height: 24px; text-align: left;}
+div.file div.file-actions { display: block; width: 300px; font-size: 18px; padding: 0px 10px 0; position: absolute; right: 0; top: 16px; text-align: right; z-index: 9}
+div.file div.file-actions a { display: inline-block; font-size: 18px; margin-right: 5px; width: 20px; height: 26px; text-align: center; color: #999; font-size: 18px; vertical-align: middle; cursor: pointer;}
+div.file div.file-actions a:hover { color: #000;}
+/*div.file div.file-actions a.round { width: 20px; height: 26px; background-color: #999; color: #fff; border-radius: 20px; padding-top: 0px;font-size: 14px; }*/
+/*div.file div.file-actions a.round:hover { background-color: #000; color: #fff; }*/
+
+div.file > span:after { display: block; width: 100%; height: 100%; position: absolute; background: transparent; top: 0; left: 0; content: ""; z-index: 99}
+div.file.file-active  > span { color: #dd3c0d; }
+div.file.file-active  > span input { color: #dd3c0d; }
+div.file.file-edit > span:after { display: none}
+div.file.file-edit > span { color: #dd3c0d; background: #666; }
+div.file.file-edit  > span input { color: #000; background: #fff;}
+div.file:last-child { border-bottom: 0px solid #eee; }
+
+#current-path { display: block; width: 100%; font-size: 14px; padding: 20px 0; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; text-transform:uppercase;}
+#current-path:before { display: inline-block; content: "Current Path"; font-weight: bold; margin-right: 10px}
+
+/* GRID MODE*/
+div.folders.view-grid {}
+div.folders.view-grid div.folder { display: block; margin: 0 10px 10px 0; vertical-align: top; }
+div.folders.view-grid div.folder span { width: 400px; height: 440px; display: block;}
+div.folders.view-grid div.folder.open span { height: 56px;}
+div.folders.view-grid div.folder.open span { width: 100%;}
+div.folders.view-grid div.folder.open > div.group-files { display: block; padding: 10px; font-size: 0; width: calc(100% + 20px); margin-left: -10px}
+div.folders.view-grid div.folder.open div.file { display: inline-block; width: calc(25% - 20px); margin: 10px; height: 364px; background: url() #eee no-repeat left top; background-size: cover; vertical-align: top;  position: relative; }
+div.folders.view-grid div.folder.open div.file.ext-svg { background-size: contain; background-position: center center;}
+div.folders.view-grid div.folder.open { background-image: none !important;}
+div.folders.view-grid div.folder.open div.file span { position: absolute; left: 0; bottom: 0; width: 100%; border-radius: 0; display: block; padding-right: 0px; padding-left: 0; background: transparent; height: 100%;}
+div.folders.view-grid div.folder.open div.file > span input { display: block; width: 100%; border-radius: 0; font-size: 10px; height: 14px; padding: 2px 5px; opacity: 1; text-align: center; margin: 0; left: 0; bottom: 0; position: absolute;}
+div.folders.view-grid div.folder.open div.file > span:after {top: 0; left: 0; background: transparent;}
+div.folders.view-grid div.folder.open div.file div.file-actions { position: absolute; right: auto; top: auto; left: 0; bottom: -30px;  width: 100%; background: rgba(255,255,255,0); display: block; padding: 10px; text-align: left; display: none !important}
+div.folders.view-grid div.file div.file-actions a { font-size: 16px !important; width: 16px; height: 16px; padding-top: 0 !important}
+div.file div.file-actions a { color: #000;}
+div.folders.view-grid div.file > span legend { top: 0; left: 0; width: 40px; height: 20px; font-size:10px; background: #fff; text-align: center; line-height: 20px;}
+div.folders.view-grid div.folder { background-image: none !important; max-width: 100%; display: block;}
+
+#dropzone-holder { display: block; width: 100%; position: fixed; top: 0; left:0; height: 100%; z-index: 99; background: #f6f6f6; padding: 20px; left: -100vw; overflow: hidden; transition: opacity .2s ease-out; opacity: 0}
+#dropzone { display: block; width: 100%; height: 100%; background: #fff; margin: 0; padding: 40px; position: relative; border-radius: 40px; overflow: auto;}
+#dropzone:before { content:"Drag and drop your files to this area, or double click to select from the disk.";  display: block; width: 100%; position: absolute; top: 50%; transform: translateY(-50%); -webkit-transform: translateY(-50%);  -ms-transform: translateY(-50%); color: #000; opacity: .3; left: 0; padding: 0 20px; font-size: 24px; font-family: 'gilroylight'; text-align: center;}
+#dropzone:after { content:"";  display: block; width: 100%; position: absolute; top: 0; height: 100%; left: 0}
+#close-dropzone { position: absolute; top: 50px; right:50px; width: 36px; height: 36px; border-radius: 36px; background-color: #f6f6f6; background: url(/lib/img/dark/x.svg) #f6f6f6 no-repeat center center; background-size: 14px 14px; cursor: pointer;}
+#close-dropzone:hover {  background: url(/lib/img/white/x.svg) #000 no-repeat center center; background-size: 14px 14px; ;}
+#dropzone-holder.active { opacity: 1; left: 0}
+
+div.dz-preview { display: inline-block; vertical-align: top; width: 25%; height: 220px; padding: 10px; position: relative; margin: 0 0px 10px 0; background: #fff;}
+div.dz-details { display: block; width: 100%; height: 200px; margin-bottom: 10px; position: relative; overflow: hidden; background: #d8348a;}
+div.dz-details img { display: block; margin: 0 auto; position: relative; top: 40%; transform: translateY(-50%); -webkit-transform: translateY(-50%);  -ms-transform: translateY(-50%); }
+div.dz-filename  { display: block; width: calc(100% - 60px); overflow: hidden; height: 30px; padding: 5px; text-align: left; color: #fff; font-size: 14px; font-family: 'gilroylight';  line-height: 1.5; padding-right: 55px;}
+div.dz-size  { display: block; position: absolute; width: 60px; right: 0;top: 0; text-align: right; padding: 5px; color:#fff}
+div.dz-preview.dz-processing div.dz-details { background: #626ad0}
+div.dz-preview.dz-success div.dz-details { background: #88b748}
+div.dz-preview.dz-error div.dz-details { background: #ff2227}
+div.dz-progress { display: block; width: 100%; height: 10px; background: #d8348a; position: relative;}
+div.dz-progress span.dz-upload {position: absolute; height: 100%; left:0; top: 0; background: #88b748}
+div.dz-success-mark { display: none;}
+div.dz-error-mark { display: none;}
+div.dz-error-message { font-size: 16px; color: #fff; position: absolute; top: 50%; left: 0; padding: 0 20px; transform: translateY(-50%); -webkit-transform: translateY(-50%);  -ms-transform: translateY(-50%); }
+
+div.datecombo, div.datecombo2 { display: block; width: 100%; font-size: 0; margin-top: 20px; margin-bottom: 20px}
+div.datecombo > input, div.datecombo > span { display: inline-block; width: calc(33.33% - 10px) !important; margin-right: 10px; vertical-align: middle; font-size: 16px; }
+div.datecombo2 > input, div.datecombo2 > span { display: block; width: 100% !important; margin-right: 0px; font-size: 16px; }
+div.datecombo > label, div.datecombo2 > label { display: block; width: 100%; font-size: 16px; font-weight: 500; margin-bottom: 5px;}
+
+</style>
+
+
+
+<script>
+
+var myDropzone;
+$(function() {
+
+	$("#fm-search-field").keypress(function(ev){
+		if(ev.keyCode == 13) {
+			location = "/cms/file-manager/?q=" + $(this).val();
+		}
+	})
+
+	$("#view-options a").click(function(){
+		if ($(this).attr("id") == "action_hide_empty") return false;
+		$("#view-options a").removeClass("active");
+		$(this).addClass("active");
+		if ($(this).hasClass("view-grid")) {
+			$("div.folders").addClass("view-grid"); 
+			$("div.folder").each(function(){
+				$(this).css("background-image","url("+$(this).attr("data-src")+")"); 
+			});
+			$("div.file").each(function(){
+				$(this).css("background-image","url("+$(this).attr("data-src")+")"); 
+			});
+		} else {
+			$("div.folders").removeClass("view-grid");
+			$("div.folder,div.file").css("background-image", "");
+
+		}
+		return false;
+	})
+
+	$("div.folder").each(function(){
+		if ($(this).attr("data-count") == "0")
+		{
+			$(this).addClass("empty");
+		}	
+	})
+
+	$("div.year-label").click(function(){
+		$(this).toggleClass("active");
+		if ($("div.year-label.active").length > 0)
+		{
+			$("div.file").addClass("hidden");
+			$("div.year-label.active").each(function(){
+					yr = $(this).html();
+					$("div.file[data-year=\""+yr+"\"]").removeClass("hidden");
+			})
+		} else {
+			$("div.file").removeClass("hidden");
+		}
+		hideEmptyFolders();
+		return false;
+	})
+
+	$("#action_hide_empty").click(function(){
+		$("#action_hide_empty").toggleClass("active");
+		hideEmptyFolders();
+
+		return false;
+	})
+
+	function hideEmptyFolders(){
+			$("div.folder").removeClass("hidden");
+			if ($("#action_hide_empty").hasClass("active"))
+			{
+				$("div.folder").each(function(){
+					if ($(this).find("div.file:not(.hidden)").length == 0) $(this).addClass("hidden");	
+				})
+			}
+	}
+
+/* FOLDER ACTIONS */
+	$("#new_folder").click(function(){
+		if ($(this).hasClass("noaccess")) return false;
+		txt = "<div class='window-form'><h3>CREATE FOLDER</h3><textarea id='txtFolderNames' placeholder='Enter folder names, one per line' rows='4'></textarea><div id='window-form-message'></div><button id='bt-create-folders'>SUBMIT</button></div>";
+		showOverlayWindow(txt);
+		$("#bt-create-folders").click(function(){
+			ret = $("#txtFolderNames").val();
+			if (ret != "")
+			{
+				$.get("/cms/file-manager/new-folder?id=" + ($(".folder-active").length > 0 ? $(".folder-active").attr("data-id") : 0) + "&value=" + encode(ret), function(data){
+					location.reload();
+					return false;	
+				});
+			} else {
+				$("#window-form-message").html("Please enter at least one folder name");
+			}
+		});
+		return false;
+	})
+
+	$("#delete_folder").click(function(){
+		if ($(this).hasClass("noaccess")) return false;
+		if ($(this).hasClass("notactive")) return false;
+
+		if ($(".folder-active").length > 0)
+		{
+			if (confirm("Are you sure you want to delete this folder?")){
+					$.get("/cms/file-manager/delete-folder?id=" + $(".folder-active").attr("data-id"), function(data){
+						console.log(data);
+						$(".folder-active").remove();
+						unselectFolder();
+						return false;	
+					});
+			};	
+		}
+		return false;
+	})
+
+	$("#upload_files").click(function(){
+		if ($(this).hasClass("noaccess")) return false;
+		if ($(this).hasClass("notactive")) return false;
+
+		if ($(".folder-active").length > 0)
+		{
+			$("#dropzone-holder").addClass("active");
+		}			
+		return false;
+	})
+
+	$("div.group-folders").sortable({
+		opacity: 0.5, items: " > div",
+      placeholder: "ui-state-highlight", stop: function( event, ui ){
+			var new_order = [];
+			ui.item.parent().children("div.folder").each(function(){
+				new_order.push($(this).attr("data-id"));
+			});
+			$.get("/cms/file-manager/sort-folders?order=" + new_order.join(","), function(data){
+				console.log(data);
+			})
+			return true;
+	  }
+    });
+
+	$("a.move-folder").click(function(){
+		txt = "";
+		var myid = $(this).attr("data-id");
+		if ($(this).parent().parent().find("div.folder").length == 0)
+		{
+			$("div.folder.level-1 > span > input").each(function(){
+	//			console.log(myid, $(this).attr("data-id"));
+				if (myid == $(this).attr("data-id")) return;
+				txt += "<option value='"+$(this).attr("data-id")+"'>"+$(this).val()+"</option>";
+			});
+		}
+		showOverlayWindow("<div class='window-form'><input type='hidden' id='originalFolderID' value='"+myid+"'><div class='datecombo2'><label>Move folder to:</label><select id='wNewParentFolder' placeholder='Select'><option value=0>Top Level</option>"+txt+"</select></div><button onclick='return moveFolder();'>SUBMIT</button></div>");
+		$("#wNewParentFolder").select2({minimumResultsForSearch: 30});
+		return false;
+			
+	})
+
+	$("a.move-file").click(function(){
+		txt = "";
+		var myid = $(this).attr("data-id");
+		$("div.folder > span > input").each(function(){
+			if (myid == $(this).attr("data-id")) return;
+			txt += "<option value='"+$(this).attr("data-id")+"'>"+$(this).val()+"</option>";
+		});
+		showOverlayWindow("<div class='window-form'><input type='hidden' id='originalFileID' value='"+myid+"'><div class='datecombo2'><label>Move folder to:</label><select id='wNewParentFolder' placeholder='Select'>"+txt+"</select></div><button onclick='return moveFile();'>SUBMIT</button></div>");
+		$("#wNewParentFolder").select2({minimumResultsForSearch: 30});
+		return false;			
+	})
+
+/* END FOLDER ACTIONS */
+
+	$("#close-dropzone").click(function(){
+		$("#dropzone-holder").removeClass("active");
+	})
+
+	folderActions();
+	fileActions();
+
+	initDropzone()
+
+//	$()
+})
+
+function folderActions(){
+	$("div.folder > span").unbind("click").unbind("dblclick");
+
+	$("div.folder > span").click(function(ev){
+		if($(ev.target).html() != $(this).html()) return false;
+		unselectFolder();
+		$(this).parent().toggleClass("open");	
+		$(this).parent().addClass("folder-active");	
+		selectFolder();
+		myDropzone.options.maxFiles = 40;
+		myDropzone.options.url = "/cms/file-manager/upload-file?id=" + $(".folder-active").attr("data-id");
+		$("#current-path").html($(".folder-active").attr("data-path"));
+	})	
+
+	$("div.folder > span").dblclick(function(ev){
+		if($(ev.target).html() != $(this).html()) return false;
+		unselectFolder();
+		$("div.folder").removeClass("folder-active").removeClass("folder-edit");	
+		$(this).parent().toggleClass("open");	
+		$(this).parent().addClass("folder-active").addClass("folder-edit");	
+		selectFolder();
+		myDropzone.options.maxFiles = 40;
+		myDropzone.options.url = "/cms/file-manager/upload-file?id=" + $(".folder-active").attr("data-id");
+		$("#current-path").html($(".folder-active").attr("data-path"));
+	})	
+
+
+	$("div.folder > span input").unbind("change");
+	$("div.folder > span input").change(function(){
+		$.get("/cms/file-manager/update-folder?id=" + $(this).attr("data-id") + "&value=" + encode($(this).val()), function(data){
+			return true;
+		})
+		return true;
+	});
+
+	$("body").click(function(ev){
+		if($(ev.target).html() == $(this).html()) {
+			unselectFolder();
+			$("div.file").removeClass("file-active").removeClass("file-edit");	
+		}
+	})
+
+}
+
+function fileActions(){
+	$("div.file > span").unbind("click").unbind("dblclick");
+	new ClipboardJS('div.file a.get-link');
+
+	$("div.file > span").click(function(ev){
+		if($(ev.target).html() != $(this).html()) return false;
+		unselectFolder();
+		$("div.file").removeClass("file-active").removeClass("file-edit");	
+		$(this).parent().addClass("file-active");	
+	})	
+
+	$("div.file > span").dblclick(function(ev){
+		if($(ev.target).html() != $(this).html()) return false;
+		unselectFolder();
+		$("div.file").removeClass("file-active").removeClass("file-edit");	
+		$(this).parent().addClass("file-active").addClass("file-edit");	
+	})	
+
+	$("div.file > span input").unbind("change");
+	$("div.file > span input").change(function(){
+		$.get("/cms/file-manager/update-file-name?id=" + $(this).parent().parent().attr("data-id") + "&value=" + encode($(this).val()), function(data){
+			return true;
+		})
+		return true;
+	});
+
+	$("a.delete-file").unbind("click");
+	$("a.update-file").unbind("click");
+
+	$("a.delete-file").click(function(){
+		if (confirm("Are you sure you want to delete this file?"))
+		{
+			$.get("/cms/file-manager/delete-file?id=" + $(this).parent().parent().attr("data-id"), function(data){
+
+			})
+			$(this).parent().parent().remove();
+		}
+	})
+
+	$("a.update-file").click(function(){
+		myDropzone.options.maxFiles = 1;
+		myDropzone.options.url = "/cms/file-manager/update-file?id=" + $(this).parent().parent().attr("data-id");
+		$("#dropzone-holder").addClass("active");
+	})
+
+
+
+}
+
+
+function initDropzone() {
+		Dropzone.autoDiscover = false;
+		myDropzone = new Dropzone("#dropzone", { maxFiles: 40, maxFilesize: {MaxUploadSize}, clickable: true, url: "/cms/file-manager/upload-file?id=" + $(".folder-active").attr("data-id")});
+
+		myDropzone.on("success", function(file, data) {
+//			alert(data);
+			if (data)
+			{
+				location.reload();
+				$(".folder-active .group-files").append(data);
+				fileActions();
+			}
+			return false;
+		});
+}
+
+function selectFolder(){
+	$("#delete_folder").removeClass("notactive");
+	$("#upload_files").removeClass("notactive");
+}
+
+function unselectFolder(){
+	$("#delete_folder").addClass("notactive");
+	$("#upload_files").addClass("notactive");
+	$("div.folder").removeClass("folder-active").removeClass("folder-edit");	
+}
+
+function moveFolder(){
+		$.get("/cms/file-manager/move-folder?id=" + $("#originalFolderID").val()+ "&newparent=" + encode($("#wNewParentFolder").val()), function(data){
+			console.log(data);
+			location.reload();
+			return false;	
+		});
+}
+
+
+function moveFile(){
+		$.get("/cms/file-manager/move-file?id=" + $("#originalFileID").val()+ "&newparent=" + encode($("#wNewParentFolder").val()), function(data){
+//			console.log(data);
+			location.reload();
+			return false;	
+		});
+}
+
+</script>

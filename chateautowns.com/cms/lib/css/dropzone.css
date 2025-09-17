@@ -1,0 +1,47 @@
+.dropzone { width: 100%; height: 200px; background: #eee; padding: 20px; max-width: 960px; margin: 50px auto }
+	.dropzone p {font-family:"Avenir LT W01 35 Light"; font-size: 1.8em; color: #252525; }
+	.dropzone p.dropmessage { position: relative; top: 50%; transform: translateY(-50%);  }
+	div.dz-details { width: 100%; padding: 0.5em 0; border-bottom: 1px solid #ececec; }
+	div.dz-success { width: 80px; height: 80px; display: inline-block; overflow: hidden; vertical-align: top; margin: 5px; border: 2px solid #fff;}
+	.dropzone div.dz-preview:last-child div.dz-details { border: 0}
+	div.dz-filename { float: left; width: 70%;font-family:"Avenir LT W01 35 Light"; font-size: 1.4em; color: #252525; display: block; text-align: left;}
+	#contract div.dz-filename span { font-size: 1em;font-family:"Avenir LT W01 35 Light"; }
+	div.dz-size { float: left; width: 30%;font-family:"Avenir LT W01 35 Light"; font-size: 1.4em; color: #252525; display: block; text-align: right; }
+	div.dz-error-message { display: none;}
+	div.dz-success-mark { display: none;}
+	div.dz-error-mark { display: none;}
+	#statusmsg { width: 800px; height: 160px; color:#252525; font-family:"Avenir LT W01 35 Light"; font-size: 16px; display: none; line-height: 1.25}
+
+	#dropzone:before { content:"Drag and drop your files to this area, or double click to select from the disk.";  display: block; width: 100%; position: absolute; top: 50%; transform: translateY(-50%); -webkit-transform: translateY(-50%);  -ms-transform: translateY(-50%); color: #000; opacity: .3; left: 0; padding: 0 20px; font-size: 24px; font-family: 'gilroylight'; text-align: center;}
+	#dropzone:after { content:"";  display: block; width: 100%; position: absolute; top: 0; height: 100%; left: 0}
+
+
+	div.slides { display: block; width: 100%; max-width: 1280px; margin: 50px auto;}
+	#slides-body {display: block; width: 100%; }
+	div.slide-row-header, div.slide-row { display: block; width: 100%; padding: 20px 0px; border-bottom: 1px solid #f0f0f0; font-size: 0}
+	div.slide-row.deleted { display: none;}
+	div.slide-row input, div.slide-row textarea { border: 1px solid #f0f0f0; width: 100%; line-height: 24px; font-size: 18px; color: #000; padding: 10px; margin-bottom: 5px;}
+	div.slide-row div.radio-group { display: inline-block; width: auto; vertical-align: middle}
+	div.slide-row span.radio-group-caption { display: inline-block; width: auto; vertical-align: middle; font-size: 14px; margin-right: 20px}
+	div.slide-row textarea  { height: 110px}
+	div.thumbnail { width: 384px; display: inline-block; vertical-align: top; font-size: 18px; color: #000}
+	div.thumbnail img { width: 100%; height: auto; display: block}
+	div.caption { width: calc(100% - 444px); display: inline-block; vertical-align: top; font-size: 18px; color: #000; padding-left: 40px}
+	div.actions { width: 60px; display: inline-block; vertical-align: top; font-size: 18px; color: #000; text-align: center;}
+	div.actions img{ display: block; margin: 0 auto}
+
+	div.slides.simple-mode div.slide-row { padding: 0px; border-color: #fff;}
+	div.slides.simple-mode div.caption { display: none;}
+	div.slides.simple-mode div.thumbnail { width: 100px; height: 60px; overflow: hidden;}
+
+
+	h6 { margin-top: 0}
+
+	#toggle-size { font-size: 18px; line-height: 40px; display: table; margin: 0 auto 0 0; background: #000; color: #fff; padding: 0 25px; cursor: pointer;}
+	#toggle-size:hover { background: #aaa; }
+
+	#form-row-dropzone div.label { display: none;}
+	#form-row-dropzone div.field { width: 100%; display: block;}
+
+	.dropzone .dz-preview, .dropzone-previews .dz-preview { display: none;}
+	.dropzone.dz-started .dz-message { display: none;}

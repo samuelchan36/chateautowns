@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="loading" lang="{Language}">
+<head>
+		
+
+<!-- Google Tag Manager -->
+<!-- End Google Tag Manager -->
+
+
+
+
+		<!-- prefetch -->
+		<link rel='dns-prefetch' href='//use.fontawesome.com' />
+		<link rel='dns-prefetch' href='//use.typekit.net' />
+		<link rel='dns-prefetch' href='//www.googletagmanager.com' />
+
+		<!-- jCRM -->
+		<meta id="jaiAccountID" content="{jaiAccountID}"/><meta id="jaiClientID" content="{jaiClientID}"/><meta id="jaiWebsiteID" content="{jaiWebsiteID}"/>
+
+		<!-- canonical link -->
+		<link rel="canonical" href="{PageAddress}">
+
+		<!-- fonts awesome -->
+		<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+		
+		<!-- fonts go here -->
+		<link rel="stylesheet" href="https://use.typekit.net/yxe3vgg.css">
+
+		<!-- IE Compatibility -->
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+		<meta name="theme-color" content="{PrimaryColour}" />
+
+		<!-- viewport -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- google console -->
+		<meta name="google-site-verification" content="" />
+		
+		<!-- facebook tags -->
+		<meta id="ogTitle" property="og:title" content="{PageTitle}" />
+		<meta id="ogImage" property="og:image" content="{PageImage}" />
+		<meta property="og:site_name" content="{SITE_TITLE}" />
+		<meta id="ogUrl" property="og:url" content="{PageAddress}" />
+		<meta id="ogDescription" property="og:description" content="{PageDescription}" />
+		<meta property="og:type" content="article" />
+
+
+		<!-- CSS Variables polyfill -->
+		<script src="/lib/plugins/cssvars/css-vars-ponyfill.js"></script>
+
+		<!-- css, javascript, meta tags -->
+		{Head}
+
+		<!-- site icon -->
+		<link rel="icon" type="image/png" href="{SiteIcon}">
+
+
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{
+	if(f.fbq)return;n=f.fbq=function(){
+		n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '{FacebookCode}');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id={FacebookCode}&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+
+
+</head>
+
+<body data-stamp="{TimeStamp}">
+
+<!-- Google Tag Manager (noscript) -->
+
+<!-- End Google Tag Manager (noscript) -->
+
+
+	<div class="overlay"><div></div><a href="" class="close-overlay"></a></div>
+	<div class="error">{Error}</div>
+	<div id="container">
+		
+		<!-- HEADER (LOGO, NAVIGATION, SOCIAL) -->
+		<header>
+			<div class="burger"><ul><li></li><li></li><li></li></ul></div>
+			<div class="logo"><a href="/"><img  src="/img/logo.svg" alt="{Company}"></a></div>
+			<nav>
+				
+			</nav>
+			
+		</header>
+
+
+		<!-- BODY CONTENT -->
+		 <div id="mainbody">
+				{Body}
+		</div>
+
+		<!-- FOOTER -->
+		<a id="contact" name="contact"></a>
+
+		<footer>
+			
+			<div class="disclaimer">
+				<div class="logo"><a href="/"><img  src="/img/logo.svg" alt="{Company}"></a></div>
+				<p>© {Year} {Company}. All rights reserved.  <a href="/privacy-policy">Privacy</a>. <a href="/terms-of-use">Terms of Use</a>. <nobr><a href="http://www.joeyai.com" target="_blank">A Joey Ai Creation.</a></nobr></p>
+				<div class="social"><a href="{SOCIAL_FB}" target="_blank"><em class="fab fa-facebook"></em></a><a href="{SOCIAL_INSTAGRAM}" target="_blank"><em class="fab fa-instagram"></em></a></div>
+			</div>
+			 
+
+		</footer>
+	
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={AnalyticsCode}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){
+	  dataLayer.push(arguments);
+	}
+  gtag('js', new Date());
+
+  gtag('config', '{AnalyticsCode}');
+
+</script>
+
+
+
+</body>
+
+</html>

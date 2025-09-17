@@ -1,0 +1,516 @@
+<html>
+<head>
+	
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+	{SiteCss}
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" ></script>
+	<script type="text/javascript" src="/lib/plugins/dropzone/dropzone.js?v=0.963" ></script>
+	<script type="text/javascript" src="/lib/js/tools.js" ></script>
+
+	<script type="text/javascript" src="/cms/app/settings.js?v={Version}"></script>
+
+<style>
+@font-face {
+    font-family: 'gilroylight';
+    src: url('/cms/lib/css/fonts/gilroy-light-webfont.woff2') format('woff2'),
+         url('/cms/lib/css/fonts/gilroy-light-webfont.woff') format('woff'),
+         url('/cms/lib/css/fonts/gilroy-light-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+</style>
+
+
+
+	<script type="text/javascript" src="/lib/plugins/tinymce5/tinymce.min.js" ></script>
+	<script type="text/javascript" src="/lib/plugins/tinymce5/jquery.tinymce.min.js" ></script>
+
+	<link rel="stylesheet" type="text/css" href="/lib/css/default.css?v={Version}"/>
+	<link rel="stylesheet" type="text/css" href="/css/main.css?v={Version}"/>
+	<link rel="stylesheet" type="text/css" href="/cms/app/assets/css/tinymce.css?v={Version}"/>
+
+<script>
+		$(function(){
+			$("html").attr("editor-mode", getQueryVariable("mode"));
+		});
+</script>
+</head>
+<body class="editor-body">
+
+	<div id="editorMenu">
+		<a id="save-changes" title="Save"><i class="fas fa-save"></i> Save Changes</a>
+		<a id="delete-section" title="Delete Section"><i class="fas fa-trash"></i>Delete Section</a>
+		<a id="insert-section" title="Insert Section"><i class="fas fa-plus"></i>Insert Section</a>
+		<a id="sort-mode" title="Sort Mode"><i class="fas fa-sort"></i>Sort Mode</a>
+		<a id="edit-section" title="Edit Section"><i class="fas fa-edit"></i>Edit Section</a>
+		<span id="close"></span>
+	</div>
+	<div id="hiddenContent" style="display: none !important"></div>
+	<div id="contentEditor">
+		<textarea id="textareaEditor" rows="30" cols="200"></textarea>
+		<div class="contentButtons"><button id="contentCancel"></button> <a id="contentSave"><i class="far fa-save"></i> UPDATE SECTION</a></div>
+	</div>
+	<div id="editorArea">
+		{Content}
+	</div>
+	<div id='section-menu'><div><div></div><button id='cancel-class'>Cancel</button> <button id='apply-class'>Apply</button></div> </div>
+
+
+	<script>
+		var editorIsActive = false;
+		var activeSection = -1;
+		var testOnce = 0;
+
+		$(function(){
+			if (getQueryVariable("mode") == "active") {
+				editorIsActive = true;
+				$("body").addClass("active");
+				classes = $("body article").attr("class").split(" ");
+				for (i=0; i < classes.length ; i++ )
+				{
+					$("body").addClass("article-" + classes[i]);
+				}
+			}
+			bindSectionEvents();
+			if ($("section.active").length > 0) {
+				activeSection = $("section.active").attr("cms-section-id");
+			}
+
+			
+			$("#contentEditor #contentSave").click(function(){
+				if (!editorIsActive) return false;
+//				$("#hiddenContent").html(tinymce.activeEditor.getContent());
+//				console.log(tinymce.activeEditor.getContent(), $("#hiddenContent section").html());
+//				$("section.active").html($("#hiddenContent section").html());
+//				console.log("content is", tinymce.activeEditor.getContent());
+//				console.log("active section is", $("section.active").length, $("section.active"));
+				$("section.active").html(tinymce.activeEditor.getContent().replaceAll("<p><cms>", "<cms>").replaceAll("</cms></p>", "</cms>") + "<cmsnav>SETTINGS</cmsnav>");
+				$("section.active cms").each(function(){
+						desc =$(this).html().replaceAll("###", "");
+						desc = desc.split("_");
+						$(this).append("<description>DYNAMIC CONTENT<br><br><span>Type:</span> <b>" + desc[0] + "</b><br><span>Parameter: </span><b>" + desc[1] + "</b></description>");
+				});
+
+//				$("section").removeClass("ui-sortable-handle").removeClass("offline").removeClass("online").removeClass("online").removeClass("cms-menu-active").removeAttr("cms-section-id");
+//				$("section cmsnav").remove();
+//				$(".ui-sortable").removeClass("ui-sortable");
+//				$("#hiddenContent").html("");
+				$("#textareaEditor").tinymce().remove();
+				$("#contentEditor").removeClass("active");
+				$("#editorMenu, #editorArea").removeClass("inactive");
+				$("body.active").removeClass("editing");
+			})
+
+			$("#contentEditor #contentCancel").click(function(){
+				if (!editorIsActive) return false;
+				if (!confirm("Are you sure you don't want to save your changes?"))
+				{
+					return false;
+				}
+
+				$("#hiddenContent").html("");
+				$("#contentEditor").removeClass("active");
+				$("#textareaEditor").tinymce().remove();
+				$("#editorMenu, #editorArea").removeClass("inactive");
+				$("body.active").removeClass("editing");
+			})
+
+			$("#edit-section").click(function(){
+				if (!editorIsActive) return false;
+				$('section.active').dblclick();
+				return false;
+			})
+			
+
+			$("#insert-section").click(insertSection);
+			$("#delete-section").click(deleteSection);
+
+			$("#apply-class").click(applySectionChanges);
+			$("#cancel-class").click(function() { $("#section-menu").hide(); $(".cms-menu-active").removeClass("cms-menu-active"); });
+
+			$("#sort-mode").click(function(){
+				$("body").toggleClass("sort-mode");
+				return false;
+			})
+
+			$("#save-changes").click(function(){
+				if (!editorIsActive) return false;
+				$("#editorArea section").removeClass("ui-sortable-handle").removeClass("offline").removeClass("online").removeClass("online").removeClass("cms-menu-active").removeAttr("cms-section-id");
+				$("#editorArea .ui-sortable").removeClass("ui-sortable");
+				$("#editorArea section cms description").remove();
+				$("#editorArea section cmsnav").remove();
+
+				$.post("/cms/pages/update-content?id=" + getQueryVariable("id"), "content=" + encode($("#editorArea").html()), function(data){
+					parent.closeEditor($("#editorArea").html());	
+				}, "text");
+				return false;
+			})
+
+			$("#close").click(function(){
+				if (confirm("Are you sure you don't want to save your changes?"))
+				{
+					parent.closeEditor("");
+				}
+				return false;
+			})
+
+				
+		})
+
+		function bindSectionEvents(){
+			if (!editorIsActive) return false;
+
+			$("section").unbind("click");
+			$("section").unbind("dblclick");
+			$("section").unbind("mouseenter");
+			$("section").unbind("mouseleave");
+			$("section cmsnav").remove();
+
+			var sectionID = 1;
+			$("section cms").each(function(){
+				if ($(this).find("description").length > 0) return false;
+				desc = $(this).html().replaceAll("###", "");
+				desc = desc.split("_");
+//				$(this).attr("data-description", "DYNAMIC CONTENT");
+				$(this).append("<description>DYNAMIC CONTENT<br><br><span>Type:</span> <b>" + desc[0] + "</b><br><span>Parameter: </span><b>" + desc[1] + "</b></description>");
+
+			});
+			$("section").each(function(){
+				$(this).attr("cms-section-id", sectionID);
+				sectionID ++;
+				$(this).append("<cmsnav>SETTINGS</cmsnav>");
+			});
+			
+			$("cmsnav").click(function(e){
+				console.log("load menu");
+				e.preventDefault();
+//				$(this).parent().toggleClass("cmsnavopen");
+//				$("section").removeClass("online").removeClass("active").addClass("offline")
+//				$(this).parent().addClass("online").addClass("active").removeClass("offline")
+				toggleSectionMenu($(this).parent());				
+				return false;
+			});
+
+			$("section").mouseenter(function(){
+				if (activeSection > 0) return false;
+//				if ($("section.cms-menu-active").length > 0 || $("section.active").length > 0)
+//				{
+//					return false;
+//				}
+				$("section").addClass("offline").removeClass("online");	
+				$(this).addClass("online").removeClass("offline");	
+			});
+			$("section").mouseleave(function(){
+				if (activeSection > 0) return false;
+//				if ($(this).hasClass("cms-menu-active") || $(this).hasClass("active"))
+//				{
+//					return false;
+//				}
+				$(this).removeClass("online").addClass("offline");	
+			});
+
+			$("section").click(function(ev){
+				if (!editorIsActive) return false;
+				if ($(this).hasClass("cms-menu-active")) return false;
+				if (activeSection == $(this).attr("cms-section-id"))
+				{
+					$(this).removeClass("active");
+					activeSection = -1;
+
+				} else {
+					activeSection = $(this).attr("cms-section-id");
+					$("section").removeClass("active").removeClass("online").addClass("offline").removeClass("cms-menu-active");
+					$("#section-menu").hide();
+
+					$(this).addClass("active");
+					$(this).addClass("online");
+					$(this).removeClass("offline");
+				}
+
+			
+				return true;
+			})
+
+			$("section").dblclick(function(){
+				if (!editorIsActive) return false;
+				$("#editorMenu, #editorArea").addClass("inactive");
+				$("body.active").addClass("editing");
+//				$("#contentEditor").addClass("active").css("top", $(this).offset().top).css("left", 0).height($(this).height()).css("width", "100%");
+				$("#contentEditor").addClass("active");
+				//$("#contentEditor textarea").height($(this).height()).css("width", "100%");
+				data = "<section class='"+$(this).attr("class")+"'>" + $(this).html() + "</section>";
+//				tinymce.activeEditor.setContent(data);
+//				$('#textareaEditor').val(data);
+				sectionClass = $(this).attr("class");
+				$(this).addClass("active");
+				$(this).find("cmsnav").remove();
+				$(this).find("cms description").remove();
+
+				$('#textareaEditor').val($(this).html());
+				tinymce.init(
+				{ 
+							selector:'#textareaEditor',
+							max_width: "1920px",
+							content_css : "/lib/css/default.css?v={Version}, /css/main.css?v={Version}, /cms/lib/css/tinymce.css?v={Version}, " + masterCSS + "?v={Version}",
+							font_formats: tinyFonts,
+							fontsize_formats: tinySizes,
+							style_formats: tinyStyles,
+							block_formats: blockFormats,
+							style_formats_autohide: true,
+							remove_script_host : true,
+							branding: false,
+							relative_urls: false,
+							document_base_url : "https://"+location.hostname+"/",
+							body_class: sectionClass + " in-view in-better-view in-view-full",
+							browser_spellcheck: true,
+							valid_elements: "*[*]",
+							valid_children: "+a[div],+div[img],+section[img],+body[img],+section[cms],+section[cmsnav]",
+							templates: tinyTemplates,
+							images_upload_url: "/cms/system/upload-image",
+							plugins : "table preview paste visualblocks code image media link fullscreen textcolor spellchecker lists template autoresize jsimage",
+							menubar: false,
+							toolbar: [	"template | styleselect formatselect  | cut copy paste | undo redo ",
+							"jsimage | media | link unlink | table | forecolor backcolor bold italic underline strikethrough alignleft aligncenter alignright alignjustify outdent indent | bullist numlist subscript superscript",
+							" removeformat visualblocks code | fullscreen"],
+							visualblocks_default_state: false,
+							  end_container_on_empty_block: true
+							}
+				);				
+
+				
+				
+
+//				$("#textareaEditor").val("<section class='"+$(this).attr("class")+"'>" + $(this).html() + "</section>");
+
+			});
+
+
+			$("article").sortable({axis: "y", containment: "parent", opacity: 0.5, items: " > section"});
+			$("article > section").disableSelection();
+		}
+
+		function applySectionChanges(){
+//			$("section.active").removeClass("full").removeClass("content").removeClass("banner").removeClass("image").removeClass("masthead").removeClass("margin-top-100").removeClass("margin-top-50").removeClass("margin-top-0").removeClass("margin-bottom-100").removeClass("margin-bottom-50").removeClass("margin-bottom-0").removeClass("left").removeClass("center").removeClass("right");
+//			$("section.active").addClass($("#section-class").val()).addClass($("#section-margin-top").val()).addClass($("#section-margin-bottom").val()).addClass($("#section-alignment").val())
+			sectionOptions = ["section-class", "section-type", "section-margin-top", "section-margin-bottom", "section-alignment", "section-transition"];
+			for (i=0; i <  sectionOptions.length;  i++)
+			{
+				el = $("#" + sectionOptions[i]).get(0);
+				for (k=0; k < el.options.length ; k++ )
+				{
+					if (el.options[k].selected) $("section.active").addClass(el.options[k].value); else $("section.active").removeClass(el.options[k].value);
+				}
+			}
+			$("section.active").attr("id", $("#section-id").val());
+			$("section.active").attr("data-label", $("#section-name").val());
+			$("#section-menu").hide();
+			$(".cms-menu-active").removeClass("cms-menu-active");
+		}
+
+		function toggleSectionMenu(sctn){
+			console.log("loading menu");
+//			if ($("#section-menu").is(":visible") && sctn.hasClass("cms-menu-active"))
+//			{
+//				$("#section-menu").hide();
+//				sctn.removeClass("cms-menu-active");
+//				return false;
+//			}
+			txt = "";
+
+			txt += "<div><label>Width</label><select id='section-class'><option value=''>Standard</option>";
+//			console.log(sectionWidths, sectionWidths.length);
+			for (s_index = 0; s_index < sectionWidths.length; s_index ++)
+			{
+				txt += "<option value='"+sectionWidths[s_index][0]+"'>"+sectionWidths[s_index][1]+"</option>";
+			}
+			
+			
+			txt += "</select></div>";
+
+			txt += "<div><label>Type</label><select id='section-type'><option value=''>Standard</option><option value='flush'>No top/bottom margin</option><option value='masthead'>Masthead (top of the page)</option></select></div>";
+			txt += "<div><label>Top Margin</label><select id='section-margin-top'><option value=''>Default (80px)</option><option value='margin-top-0'>no margin</option><option value='margin-top-50'>50px</option><option value='margin-top-100'>100px</option><option value='margin-top-150'>150px</option></select></div>";
+			txt += "<div><label>Bottom Margin</label><select id='section-margin-bottom'><option value=''>Default (80px)</option><option value='margin-bottom-0'>no margin</option><option value='margin-bottom-50'>50px</option><option value='margin-bottom-100'>100px</option><option value='margin-bottom-150'>150px</option></select></div>";
+			txt += "<div><label>Content Alignment</label>><select id='section-alignment'><option value=''>Default</option><option value='left'>Align Left</option><option value='center'>Align Center</option><option value='right'>Align Right</option></select></div>";
+			txt += "<div><label>Animation</label>><select id='section-transition'><option value=''>None</option><option value='slide-in-bottom'>Slide Up</option></select></div>";
+			txt += "<div><label>ID</label>><input type='text' id='section-id' value='"+ (sctn.is("[id]") ? sctn.attr("id") : "")+"'/></div>";
+			txt += "<div><label>Name</label>><input type='text' id='section-name' value='"+ (sctn.is("[data-label]") ? sctn.attr("data-label") : "")+"'/></div>";
+			txt += "";
+			
+//			marginTop = ""; marginBottom = ""; align = ""; animate = ""; type="";
+//			if (sctn.hasClass("margin-top-100")) marginTop = "margin-top-100";
+//			if (sctn.hasClass("margin-top-50")) marginTop = "margin-top-50";
+//			if (sctn.hasClass("margin-top-0")) marginTop = "margin-top-0";
+//
+//			if (sctn.hasClass("margin-bottom-100")) marginBottom =  "margin-bottom-100";
+//			if (sctn.hasClass("margin-bottom-50")) marginBottom = "margin-bottom-50";
+//			if (sctn.hasClass("margin-bottom-0")) marginBottom = "margin-bottom-0";
+//			
+//			if (sctn.hasClass("left")) align = "left";
+//			if (sctn.hasClass("center")) align = "center";
+//			if (sctn.hasClass("right")) align = "right";
+//			
+//			if (sctn.hasClass("content")) type = "content";
+//			if (sctn.hasClass("full")) type = "full";
+//			if (sctn.hasClass("banner")) type = "banner";
+//			if (sctn.hasClass("image")) type = "image";
+//			if (sctn.hasClass("masthead")) type = "masthead";
+
+//			console.log(type);
+			$("#section-menu > div > div").html(txt);
+			$("#section-menu").width(sctn.width()).height(Math.max(400, sctn.height()));
+
+			sectionOptions = ["section-class", "section-type", "section-margin-top", "section-margin-bottom", "section-alignment", "section-transition"];
+			for (i=0; i <  sectionOptions.length;  i++)
+			{
+//				console.log("#" + sectionOptions[i]);
+				el = $("#" + sectionOptions[i]).get(0);
+//				console.log(el);
+
+				for (k=0; k < el.options.length ; k++ )
+				{
+					if (sctn.hasClass(el.options[k].value)) el.options[k].selected = true;
+				}
+			}
+
+			sctn.addClass("cms-menu-active");
+			setTimeout(function(){
+				$("#section-menu").css("top", sctn.offset().top, 0).css("left", sctn.offset().left, 0).show().attr("data-section-id", sctn.attr("cms-section-id"));
+			}, 100);
+
+//			$("#section-transition").val("");
+//			$("#section-margin-top").val(marginTop);
+//			$("#section-margin-bottom").val(marginBottom);
+//			$("#section-alignment").val(align);
+//			$("#section-class").val(type);
+		}
+
+		function deleteSection(){
+			$("section.active").remove();
+			return false;
+		}
+
+		function insertSection(){
+			if ($("section.active").length > 0)
+			{
+				$("section.active").after("<section class=\"js-animate\"><p>&nbsp;</p></section>");
+			} else {
+				$("article").append("<section><p>&nbsp;</p></section>");
+			}
+			
+			bindSectionEvents();
+			return false;
+		}
+
+
+
+	</script>
+
+	<style>
+		.js-reveal-item { opacity: 1}
+
+		div.article div.txt { right: 0; bottom: -50px; }
+		.js-slide-up { top: 0px; transition: top .6s cubic-bezier(0.39, 0.575, 0.565, 1), opacity 1s cubic-bezier(0.39, 0.575, 0.565, 1); opacity: 1;}
+		.js-animation-1 div.txt { -webkit-animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;	        animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;}
+		.js-animation-1 a.btn { -webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;	        animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both 1s;}
+		.js-animation-1 div.grid-2 > div { right: 0px;}
+		.js-animation-4 div.grid > div  { -webkit-animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;	        animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both; }
+		.js-animation-2 div.grid-2 > div { -webkit-animation: flip-in-hor-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both .8s;	        animation: flip-in-hor-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both .8s;}
+		.js-animation-3 div.grid-3 > div { -webkit-animation: puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;	        animation: puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;}
+		.flip-in-hor-bottom { opacity: 1}
+
+		body h1 { -webkit-animation: focus-in-expand 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; animation: focus-in-expand 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;}
+		body section.nav ul li { top: 0px; opacity: 1; transition: all .5s ease-out}
+		body section.nav ul li:nth-child(2) { transition: all .4s ease-out .2s}
+		body section.nav ul li:nth-child(3) { transition: all .3s ease-out .3s}
+
+	body.editor-body { padding: 20px}
+
+
+		body { padding-top: 0px; padding-top: 36px; padding-top: 20px; background: #eee; }
+		body.active { padding-top: 80px; }
+		body.active.editing { padding: 0px; background: #fff;}
+		body:not(.active).editor-body section { border-bottom: 1px dotted #eee}
+/*		article { background: transparent !important}*/
+
+		#editorMenu { position: fixed; top: 0; left: 0; width: 100%; background-color: #fff; padding: 10px 0px; z-index: 12; display: block; display: none; font-family: gilroylight}
+		#editorMenu span#close { display: block; position: absolute; right: 10px; top: 10px; width: 40px; height: 40px; border-radius: 40px; background: url(/lib/img/white/x.svg) #000 no-repeat center center;  background-size: 20px 20px; box-sizing: border-box; padding: 0; cursor: pointer}
+		#editorMenu span#close:hover { background-color: #aaa;}
+		body.active #editorMenu { display: block;}
+		#editorMenu a { display: inline-block; margin-right: 20px; line-height: 36px; background-color: #fff; color: #000; padding: 0 25px; font-size: 14px; text-transform: uppercase; cursor: pointer}
+		#editorMenu a:hover { color: #aaa}
+		#editorMenu a i { display: inline-block; margin-right: 5px; font-size: 20px; line-height: 36px;}
+		#editorArea { display: block; width: 100%;}
+		section { position: relative; overflow: hidden; transition: all .1s ease-out;}
+		section.active:after { background: rgba(136,202,0,0.8); display: none;}
+		section:after { content:""; display: block; position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: rgba(255, 255, 255, 0.1); z-index: 8; border: 1px dotted #000; box-sizing: border-box; display: none; }
+		body.active section:after { display: block;}
+/*		section:before { content:"OPTIONS"; display: block; position: absolute; width: 110px; top: 0; left: 0; z-index: 9; padding: 5px 10px; color: #000; font-size: 14px; text-align: left; background: url(/lib/img/white/arrow-down.svg) #000 no-repeat 90px center; background-size: 15px 12px; color: #fff;box-sizing: border-box; display: none; }*/
+		body.active section.active:after { display: block;}
+/*		body.active section:before { display: block; opacity: 0}*/
+/*		body.active section.online:before { opacity: 1}*/
+		body.active section { min-height: 200px; }
+		body.active section.active { max-height: 9999px; }
+		body.active section.cms-menu-active { min-height: 400px !important}
+		body.active section.cms-menu-active:before { background: url(/lib/img/white/arrow-down2.svg) #000 no-repeat 90px center; background-size: 15px 12px; }
+
+		cmsnav { display: block; position: absolute; width: 110px; top: 0; left: 0; z-index: 9; padding: 5px 10px; color: #000; font-size: 14px; text-align: left; background: url(/lib/img/white/arrow-down.svg) #000 no-repeat 90px center; background-size: 15px 12px; color: #fff;box-sizing: border-box; opacity: 0; cursor: pointer;}
+		body.active section.online cmsnav { display: none; }
+		body.active section.active cmsnav { display: block; opacity: 1}
+		body.active section.active.cms-menu-active cmsnav { display: none;}
+		body.editing cmsnav { display: none;}
+		cmsnav {font-family: gilroylight}
+		
+		section.offline { opacity: .3}
+		section.online{ opacity: 1}
+
+		#section-menu  { display: block; position: absolute; top: 0; left: 0; background: #eeeeeeee; padding: 20px; border: 0px solid #000; z-index: 10; width: 400px; display: none; font-family: gilroylight}
+		#section-menu  > div { display: block; position: relative; width: 600px; height: 370px; max-height: 100%; max-width: 100%; margin: 0 auto; top: 50%; transform: translate3D(0, -50%, 0); background: #000; padding: 40px; }
+		#section-menu  > div > div { display: block; width: 100%;}
+		#section-menu  > div > div > div { display: block; width: 100%; padding: 5px 0px; font-size: 0}
+		#section-menu  > div > div > div label {  display: inline-block; vertical-align: top; line-height: 20px; font-size: 14px; color: #fff; width: 140px;}
+		#section-menu  > div > div > div select, #section-menu  > div > div input{  display: inline-block; vertical-align: top; line-height: 20px; font-size: 14px; color: #fff; border: 0; background: transparent; height: 20px; padding: 0 10px; width: calc(100% - 140px); min-height: 20px; text-transform: none;}
+		#section-menu  > div > div > div select option {  color: #fff; background: #000; }
+		#section-menu  button {  background: transparent; color: #fff;  line-height: 20px; font-size: 12px; padding: 0 30px; display: inline-block; margin: 20px 20px 0 0; border: 1px solid #fff}
+
+
+		#contentEditor { display: block; width: 100vw; position: relative; left: 0; top: 0; display: none; padding-top: 60px; z-index: 20; }
+		#contentEditor textarea { display: block; width: 100%; height:  100%; min-height: 800px; }
+		#contentEditor.active { display: block; z-index: 21; background: #fff;}
+		#contentEditor.active div.contentButtons { display: block; position: fixed; top: 0; left: 0; width: 100%; height: 60px; background: #000;font-family: gilroylight}
+		#contentEditor.active div.contentButtons a { display: inline-block; line-height: 30px; color: #fff; padding: 0 25px; font-size: 14px; text-transform: uppercase; margin: 15px 15px 0; border: 0; cursor:pointer;}
+		#contentEditor.active div.contentButtons a:hover { color: #aaa}
+		#contentEditor.active div.contentButtons a i { display: inline-block; margin-right: 5px; font-size: 20px; line-height: 30px;}
+
+		#contentEditor.active #contentCancel  { display: block; position: absolute; right: 20px; top: 10px; width: 40px; height: 40px; border-radius: 40px; background: url(/lib/img/white/x.svg) transparent no-repeat center center;  border: 1px solid #fff; background-size: 20px 20px; box-sizing: border-box; padding: 0; line-height: 1; margin: 0; cursor: pointer;}
+		#contentEditor.active #contentCancel:hover  { background-color: #aaa;}
+
+		#editorArea.inactive, #editorMenu.inactive { display: none !important;}
+
+		.tox .tox-dialog { min-height: 600px;}
+		div.tox-tinymce { min-height: calc(100vh - 60px) !important;}
+		.tox .tox-dialog__content-js { max-height: calc(100% - 130px)}
+
+	cms { display: block; width: 100%; height: 100px; position: relative; background: #fff; font-size: 0; margin: 10px auto 0; }
+	body.active cms { border-bottom: 1px dotted #000; height: 200px;}
+
+	body.editor-body:not(.active) cms:after { content:"DYNAMIC CONTENT"; display: block; width: 100%; top: 50%; position: absolute; left: 0; text-align: left; padding: 0 20px; font-size: 18px; color: #000; transform: translate3D(0,-50%, 0); text-align: center;}
+	cms description { display: block; width: 100%; top: 50%; position: absolute; left: 0; text-align: left; padding: 0 20px; font-size: 18px; color: #000; transform: translate3D(0,-50%, 0); text-align: center; line-height: 1.5}
+	cms description span { font-size: 14px; }
+	cms description b { font-size: 14px;  color: #0099ff}
+	body.sort-mode article > section { margin: 10px auto;}
+	section { transition: none !important}
+	body.active.sort-mode section { width: 100% !important; max-width: 100% !important; max-height: 100px!important; min-height: 100px !important; overflow: hidden !important}
+/*	body.active.sort-mode section.active { max-height: 600px!important; }*/
+	section.ui-sortable-helper { max-height: 100px !important; overflow: hidden !important; z-index: 99}
+	section.ui-sortable-helper:after { background: #ff0000; position: absolute; top: 0; left: 0; width: 100%; height: 100%; min-height: 100px; display: block; content:"";}
+	article { padding: 20px !important}
+
+	div.video iframe { display: none; width: 100%; height: 100%; border: 0; position: absolute; left: 0; top: 0; }
+	</style>
+
+
+</body>
+</html>

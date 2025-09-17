@@ -1,0 +1,17 @@
+<form name="{frmName}" id="{frmID}" action="{frmAction}" method="{frmMethod}" enctype="{frmEnc}" target="{frmTarget}" onsubmit="return validateNew(this)">
+		<!-- START BLOCK : HIDDENFIELDS -->
+			{Data}
+		<!-- END BLOCK : HIDDENFIELDS -->
+	<div class="form-wrapper">
+		<!-- START BLOCK : FORMBLOCK -->
+		<div class="form-block">
+				<h2>{Label}</h2>
+				<div class="form-content">
+				<!-- START BLOCK : FORMDATA -->
+					{FormRow}
+				<!-- END BLOCK : FORMDATA -->
+				</div>
+		</div>
+		<!-- END BLOCK : FORMBLOCK -->
+	</div>
+</form>
